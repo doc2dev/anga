@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity"
+    android:background="@color/bg_sunny">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/dayWeatherFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shimmer_colored="false"
@@ -52,7 +53,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dayWeatherFrame"
-        android:background="@color/bg_sunny"
         app:shimmer_colored="false"
         app:shimmer_base_alpha="0.6"
         app:shimmer_highlight_alpha="0.5"

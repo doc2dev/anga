@@ -8,7 +8,6 @@ import androidx.room.TypeConverters
 import com.doc2dev.anga.data.local.converters.Converters
 import com.doc2dev.anga.data.local.dao.CurrentWeatherDao
 import com.doc2dev.anga.data.local.models.CurrentWeatherModel
-import com.doc2dev.anga.domain.CurrentWeather
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
@@ -43,8 +42,4 @@ abstract class AngaDb: RoomDatabase() {
             return INSTANCE!!
         }
     }
-}
-
-val dbModule = module {
-    single { AngaDb.getInstance(androidApplication()) }
 }

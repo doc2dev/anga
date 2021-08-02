@@ -1,4 +1,4 @@
-package com.doc2dev.anga.domain
+package com.doc2dev.anga.domain.models
 
 import java.time.LocalDateTime
 
