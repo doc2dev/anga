@@ -21,6 +21,8 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Create properties file
+      run: echo "OPEN_WEATHER_API_KEY=dummy_key" > local.properties
     - name: Run lint
       run: ./gradlew lintDebug
     - name: Build with Gradle
