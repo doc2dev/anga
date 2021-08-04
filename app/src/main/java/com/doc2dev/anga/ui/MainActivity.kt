@@ -9,10 +9,10 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.palette.graphics.Palette
 import com.doc2dev.anga.R
 import com.doc2dev.anga.databinding.ActivityMainBinding
+import com.doc2dev.anga.databinding.TempDisplayBinding
 import com.doc2dev.anga.domain.models.CurrentWeather
 import com.doc2dev.anga.ui.viewmodel.WeatherViewModel
 import com.google.android.gms.location.*
@@ -20,6 +20,7 @@ import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.annotations.AfterPermissionGranted
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
+import kotlin.math.round
 
 
 const val RC_LOCATION  = 200
@@ -108,7 +109,21 @@ class MainActivity : AppCompatActivity() {
             }
             weatherImage.setImageResource(drawableId)
             root.setBackgroundColor(backgroundColor)
+            val roundedTemp = round(weather.currentTemperature).toInt().toString()
+            tempTextView.text = "$roundedTemp°"
+            weatherTextView.text = weather.weatherDescription
+            showTemperature(minTempDisplay, weather.minTemperature, "min")
+            showTemperature(currentTempDisplay, weather.currentTemperature, "current")
+            showTemperature(maxTempDisplay, weather.maxTemperature, "max")
             extractColorsFromImage()
+        }
+    }
+
+    private fun showTemperature(binding: TempDisplayBinding, temp: Double, tempType: String) {
+        with (binding) {
+            val roundedTemp = round(temp).toInt().toString()
+            tempTextView.text = "$roundedTemp°"
+            tempTypeTextView.text = tempType
         }
     }
 

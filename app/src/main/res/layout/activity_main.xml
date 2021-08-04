@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity"
-    android:background="@color/bg_sunny">
+    android:background="@color/bg_sunny"
+    tools:context=".ui.MainActivity">
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/dayWeatherFrame"
@@ -13,13 +13,13 @@
         android:layout_height="400dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shimmer_colored="false"
         app:shimmer_base_alpha="0.6"
-        app:shimmer_width_ratio="0.5"
+        app:shimmer_colored="false"
         app:shimmer_height_ratio="0.5"
         app:shimmer_highlight_alpha="0.3"
         app:shimmer_highlight_color="@color/black"
-        app:shimmer_tilt="180">
+        app:shimmer_tilt="180"
+        app:shimmer_width_ratio="0.5">
 
         <ImageView
             android:id="@+id/weatherImage"
@@ -42,6 +42,33 @@
 
             </androidx.appcompat.widget.Toolbar>
 
+            <TextView
+                android:id="@+id/tempTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/white"
+                android:textSize="50sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="18°" />
+
+            <TextView
+                android:id="@+id/weatherTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif-medium"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tempTextView"
+                tools:text="overcast clouds" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
@@ -50,16 +77,61 @@
         android:id="@+id/forecastFrame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dayWeatherFrame"
-        app:shimmer_colored="false"
         app:shimmer_base_alpha="0.6"
+        app:shimmer_colored="false"
+        app:shimmer_height_ratio="0.5"
         app:shimmer_highlight_alpha="0.5"
         app:shimmer_highlight_color="@color/black"
-        app:shimmer_width_ratio="0.5"
-        app:shimmer_height_ratio="0.5"
-        app:shimmer_tilt="180">
+        app:shimmer_tilt="180"
+        app:shimmer_width_ratio="0.5">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/minTempDisplay"
+                layout="@layout/temp_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/currentTempDisplay"
+                layout="@layout/temp_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/maxTempDisplay"
+                layout="@layout/temp_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:dividerColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/minTempDisplay" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
