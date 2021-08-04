@@ -43,6 +43,7 @@ fun buildQueryParamInterceptor(): Interceptor = Interceptor { chain ->
         .addQueryParameter("lon", prefs.getLongitude().toString())
         .addQueryParameter("appId", apiKey)
         .addQueryParameter("units", "metric")
+        .addQueryParameter("exclude", "current,minutely,hourly,alerts")
         .build()
     val requestBuilder = original.newBuilder()
         .url(newUrl)

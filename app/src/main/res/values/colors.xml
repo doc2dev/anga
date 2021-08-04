@@ -9,4 +9,5 @@
     <color name="bg_sunny">#47AB2F</color>
     <color name="bg_cloudy">#54717A</color>
     <color name="bg_rainy">#57575D</color>
+    <color name="status_bar">#FBD4A0</color>
 </resources>
