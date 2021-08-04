@@ -10,20 +10,23 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.doc2dev.anga.R
 import com.doc2dev.anga.databinding.ActivityMainBinding
 import com.doc2dev.anga.databinding.TempDisplayBinding
 import com.doc2dev.anga.domain.models.CurrentWeather
+import com.doc2dev.anga.domain.models.Forecast
+import com.doc2dev.anga.ui.adapter.ForecastAdapter
 import com.doc2dev.anga.ui.viewmodel.WeatherViewModel
 import com.google.android.gms.location.*
 import com.vmadalin.easypermissions.EasyPermissions
 import com.vmadalin.easypermissions.annotations.AfterPermissionGranted
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import kotlin.math.round
 
 
-const val RC_LOCATION  = 200
+const val RC_LOCATION = 200
 
 class MainActivity : AppCompatActivity() {
     private var binding: ActivityMainBinding? = null
@@ -52,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 locationResult ?: return
                 Timber.tag("FOO").d("Received location")
                 locationResult.locations.firstOrNull()?.let { location ->
-                    with (location) {
+                    with(location) {
                         weatherViewModel.saveLocation(latitude.toFloat(), longitude.toFloat())
                     }
                     weatherViewModel.refreshWeather()
@@ -82,9 +85,13 @@ class MainActivity : AppCompatActivity() {
     private fun getLatestWeather() {
         Timber.tag("FOO").d("Getting weather...")
         weatherViewModel.weatherLiveData.observe(this) {
-            Timber.tag("FOO").d("Received current weather: $it")
             if (it != null) {
                 showCurrentWeather(it)
+            }
+        }
+        weatherViewModel.forecastLiveData.observe(this) {
+            if (it.isNotEmpty()) {
+                showForecast(it)
             }
         }
         weatherViewModel.messageLiveData.observe(this) {
@@ -93,10 +100,19 @@ class MainActivity : AppCompatActivity() {
         weatherViewModel.getLatestWeather()
     }
 
+    private fun showForecast(fiveDayForecast: List<Forecast>) {
+        val layoutManager =  LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        Timber.tag("FOO").d("Forecast: $fiveDayForecast")
+        with (binding!!) {
+            forecastFrame.hideShimmer()
+            forecastRecycler.layoutManager = layoutManager
+            forecastRecycler.adapter = ForecastAdapter(fiveDayForecast)
+        }
+    }
+
     private fun showCurrentWeather(weather: CurrentWeather) {
         with(binding!!) {
             dayWeatherFrame.hideShimmer()
-            forecastFrame.hideShimmer()
             val summary = weather.weatherSummary.toLowerCase()
             var backgroundColor = ContextCompat.getColor(this@MainActivity, R.color.bg_sunny)
             var drawableId = R.drawable.forest_sunny
@@ -109,8 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
             weatherImage.setImageResource(drawableId)
             root.setBackgroundColor(backgroundColor)
-            val roundedTemp = round(weather.currentTemperature).toInt().toString()
-            tempTextView.text = "$roundedTemp°"
+            tempTextView.text = weather.currentTemperature.formatAsTemperature()
             weatherTextView.text = weather.weatherDescription
             showTemperature(minTempDisplay, weather.minTemperature, "min")
             showTemperature(currentTempDisplay, weather.currentTemperature, "current")
@@ -120,9 +135,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showTemperature(binding: TempDisplayBinding, temp: Double, tempType: String) {
-        with (binding) {
-            val roundedTemp = round(temp).toInt().toString()
-            tempTextView.text = "$roundedTemp°"
+        with(binding) {
+            tempTextView.text = temp.formatAsTemperature()
             tempTypeTextView.text = tempType
         }
     }
@@ -133,7 +147,6 @@ class MainActivity : AppCompatActivity() {
         val builder = Palette.Builder(bitmap).setRegion(0, 0, 100, 30)
         builder.generate {
             it?.let { palette ->
-                val default = ContextCompat.getColor(this, R.color.black)
                 setColors(palette.swatches[0].rgb)
             }
         }

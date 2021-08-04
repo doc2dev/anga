@@ -6,23 +6,23 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.doc2dev.anga.data.local.converters.Converters
-import com.doc2dev.anga.data.local.dao.CurrentWeatherDao
+import com.doc2dev.anga.data.local.dao.WeatherDao
 import com.doc2dev.anga.data.local.models.CurrentWeatherModel
-import org.koin.android.ext.koin.androidApplication
-import org.koin.dsl.module
+import com.doc2dev.anga.data.local.models.ForecastModel
 
 @Database(
     entities = [
-        CurrentWeatherModel::class
+        CurrentWeatherModel::class,
+        ForecastModel::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(
     Converters::class
 )
 abstract class AngaDb: RoomDatabase() {
-    abstract fun currentWeatherDao(): CurrentWeatherDao
+    abstract fun currentWeatherDao(): WeatherDao
 
     companion object {
         @Volatile
