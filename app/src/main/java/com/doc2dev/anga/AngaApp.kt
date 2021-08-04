@@ -1,6 +1,7 @@
 package com.doc2dev.anga
 
 import android.app.Application
+import android.os.Build
 import timber.log.Timber
 
 class AngaApp : Application() {
@@ -14,6 +15,9 @@ class AngaApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if ("robolectric" == Build.FINGERPRINT) {
+            return
+        }
         KoinHelper.initDI()
         Timber.plant(Timber.DebugTree())
     }
